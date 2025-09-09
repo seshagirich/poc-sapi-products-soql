@@ -1,0 +1,11 @@
+{
+    "customerId": "ABC-001",
+  	"company": "EECOL",
+    "customerName": "Ravi",
+    "phone": "+91-9876543210",
+    "street": "12-3-45, MG Road",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "postalCode": "500081",
+    "country": "India"
+}

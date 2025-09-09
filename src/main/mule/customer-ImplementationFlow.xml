@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	 <flow name="post:\v1\customer:application\json:poc-sapi-products-soql-config">
+        <logger level="INFO" doc:name="start flow " doc:id="e3ea7684-c29a-4342-8f60-c9feaaa69a1e" message="start flow  #[payload]"/>
+		<flow-ref doc:name="commonStartLoggerSub_Flow" doc:id="d056a614-4061-4551-822e-f3d20c9cf759" name="commonStartLoggerSub_Flow"/>
+		<set-variable value="#[payload.customerId]" doc:name="Set Variable" doc:id="64584b0e-08b2-4550-ac1f-16f7bbbdf506" variableName="customerId"/>
+		<logger level="INFO" doc:name="get the data from salesforce" doc:id="4edc71a8-e36b-4aa1-973b-c8c1d3ee85d9" message="get the data from salesforce"/>
+		<salesforce:query doc:name="salesforce query" doc:id="0217cb28-5984-4b7e-9330-ee0b155c144e" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT CITY__c, COMPANY__c, COUNTRY__c, CUSTOMERID__c,
+       CUSTOMERNAME__c, PHONE__c, POSTALCODE__c,
+       STATE__c, STREET__c
+FROM OnlineCustomers__c
+WHERE CUSTOMERID__c = :customerId
+]]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[{"customerId": "'" ++ vars.customerId ++ "'"}]]]></salesforce:parameters>
+		</salesforce:query>
+		<logger level="INFO" doc:name="get the response from salesforce" doc:id="19c39572-6c42-45e2-8d46-7f431cee6562" message="get the response from salesforce"/>
+		<ee:transform doc:name="Transform Message" doc:id="9449f4f5-9aae-4591-8283-ca9c34008c95" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="commonEndLoggerSub_Flow1" doc:id="f6df4e5e-dec7-4a69-985e-fd5514c9f14a" name="commonEndLoggerSub_Flow1"/>
+		<logger level="INFO" doc:name="end flow " doc:id="a8f4b05f-7eb5-4640-a973-f0eb24d26752" message="end flow  #[payload]"/>
+    
+</flow>
+	
+	
+	</mule>

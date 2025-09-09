@@ -1,0 +1,64 @@
+#%RAML 1.0
+title: poc-sapi-products-soql
+protocols:
+  - HTTP
+  - HTTPS
+version: v1
+
+
+traits:
+  Client-ID-Policy: !include /trait.raml
+
+/v1:
+  /prices:
+    post:
+      is: [Client-ID-Policy]
+      body:
+        application/json:
+          example: !include examples/price-request-file.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/price-response-file.json
+                
+            
+  /stock:
+    post:
+      is: [Client-ID-Policy]
+      body:
+        application/json:
+          example: !include examples/stock-request-file.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/stock-response-file.json
+                
+  /tax:
+    post:
+      is: [Client-ID-Policy]
+      body:
+        application/json:
+          example: !include examples/tax-request-file.json
+      responses:
+        200:
+          body:
+            application/json: 
+              example: !include examples/tax-response-file.json
+                
+  /customer:
+    post:
+      is: [Client-ID-Policy]
+      body:
+        application/json:
+          example: !include examples/customer-request-file.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/customer-response-file.json
+              
+                
+            
+            

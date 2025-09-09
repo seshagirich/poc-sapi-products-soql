@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	
+	 <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="4b50ba1e-f4e6-44ac-84f0-388b833fe7bf" >
+		<salesforce:basic-connection username="${soql.username}" password="${soql.password}" securityToken="${soql.securitytoken}" />
+	</salesforce:sfdc-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="2d73bf0a-d2f8-4548-9b52-69dcebd3ac7b" file="dev.yaml" />
+	<flow name="post:\v1\prices:application\json:poc-sapi-products-soql-config">
+        <logger level="INFO" doc:name="start flow" doc:id="8f584a4b-e667-493a-905c-83e64f0a83e1" message="start flow"/>
+		<flow-ref doc:name="commonStartLoggerSub_Flow" doc:id="73fb158c-4dd6-4e34-a127-f0b3b107f0b3" name="commonStartLoggerSub_Flow"/>
+		<logger level="INFO" doc:name="print query " doc:id="45c30ddc-dc7f-4c30-82a8-191b98fce3e4" message="print query  *** #[payload] *****"/>
+		<salesforce:query doc:name="SOQL price detail" doc:id="e36d52bb-dd1e-4640-b0eb-ac1272d096cc" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[#[payload]]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<logger level="INFO" doc:name="print query response " doc:id="4d8b1956-975c-431e-bd36-2dead86ef1a4" message="print query response ***#[payload]****"/>
+		<ee:transform doc:name="response" doc:id="eae49be1-54c8-4ecd-be95-36d94e8d67ef" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="commonEndLoggerSub_Flow1" doc:id="299d19aa-dba6-48a6-898d-c3603ae14c47" name="commonEndLoggerSub_Flow1"/>
+		<logger level="INFO" doc:name="end flow " doc:id="c11ca2e6-0e5f-44a8-96dc-7c73571b88e1" message="end flow "/>
+		<error-handler ref="errorhandlingError_Handler" />
+    
+</flow>
+	
+	</mule>

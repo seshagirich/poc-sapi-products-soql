@@ -1,0 +1,9 @@
+[
+    {
+        "TAXAMOUNT__c": "75",
+        "CODE__c": "AR",
+        "STATENAME__c": "Arunachal Pradesh",
+        "Id": null,
+        "type": "productsTax__c"
+    }
+]

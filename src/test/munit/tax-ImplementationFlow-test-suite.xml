@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="tax-ImplementationFlow-test-suite.xml" />
+	<munit:test name="tax-ImplementationFlow-test-suite-post:\v1\tax:application\json:poc-sapi-products-soql-configTest" doc:id="581393ad-87e1-4724-995d-e12b9cab8ff5" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="70e48ca6-7115-468c-b04c-6067144b048d" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get the Tax data from SOQL" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('tax.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5e83406d-f182-4c8a-88a3-1eb7114b921a" >
+				<munit:payload value="#[&quot;SELECT CODE__c, STATENAME__c, TAXAMOUNT__c FROM productsTax__c  WHERE code__c ='AR'&quot;]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\v1\tax:application\json:poc-sapi-products-soql-config" doc:id="4c38d5d4-bfdf-4fa3-84b7-ade96f7a25bb" name="post:\v1\tax:application\json:poc-sapi-products-soql-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9b623d99-1740-41e6-8329-3557f190957f" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	
+	<munit:test name="tax-ImplementationFlow-test-suite-post:\v1\tax-error" doc:id="b51c8cdf-4a95-41d1-8036-619c4af14d2f" description="Test" expectedErrorType="SALESFORCE:CONNECTIVITY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="83975766-f076-4191-9875-0d80e2fe6009" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get the Tax data from SOQL" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="SALESFORCE:CONNECTIVITY" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="17700d48-dd4a-48ac-977b-124cb74485d1" >
+				<munit:payload value="#[&quot;SELECT CODE__c, STATENAME__c, TAXAMOUNT__c FROM productsTax__c  WHERE code__c ='AR'&quot;]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\v1\tax:application\json:poc-sapi-products-soql-config" doc:id="57ec1ca6-07df-4bc7-ba17-3f500fb26025" name="post:\v1\tax:application\json:poc-sapi-products-soql-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="15cdf0d8-1079-40c9-9861-6235a1e42050" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	
+</mule>

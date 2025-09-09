@@ -1,0 +1,15 @@
+[
+    {
+        "CITY__c": "Ongole",
+        "CUSTOMERID__c": "ABC-002",
+        "STREET__c": "1-52 oc colony doddavaram",
+        "COMPANY__c": "EECOL",
+        "POSTALCODE__c": "523263",
+        "COUNTRY__c": "India",
+        "STATE__c": "Andhra Pradesh",
+        "Id": null,
+        "CUSTOMERNAME__c": "Seshu",
+        "type": "OnlineCustomers__c",
+        "PHONE__c": "9492169711"
+    }
+]

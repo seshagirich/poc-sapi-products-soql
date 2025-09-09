@@ -1,0 +1,14 @@
+{
+  "productsDetails": [
+    {
+      "productName": "bulbs",
+      "stock_keeping_unit_code": "WP1",
+      "avaliableQty": 2
+    },
+    {
+      "productName": "bulbs",
+      "stock_keeping_unit_code": "WP1",
+      "avaliableQty": 222
+    }
+  ]
+}

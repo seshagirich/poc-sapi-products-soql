@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="commonStartLoggerSub_Flow" doc:id="323e6850-53e0-438b-8ac1-3a045244e163" >
+		<set-variable value="#[message.attributes.requestPath]" doc:name="Set Variable" doc:id="b772bd1a-6932-412b-a438-a5a43dcdf2a4" variableName="flowName"/>
+		<ee:transform doc:name="Transform Message" doc:id="47f94b14-1ee2-4d44-8640-d187f34f17dc" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="startFlow" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"flowName": vars.flowName,
+	"status": "startFlow",
+	"correlationID": correlationId
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e4f6c372-c0d7-4540-8569-82b13ca8eda8" message="#[vars.startFlow]"/>
+	</sub-flow>
+	<sub-flow name="commonEndLoggerSub_Flow1" doc:id="cefb89a6-d14e-4f12-beb1-1687c6bc75e5" >
+		<ee:transform doc:name="Transform Message" doc:id="120b9cc5-46a6-4921-90dd-73526c314537">
+			<ee:message>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="endFlow" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"flowName": vars.flowName,
+	"status": "endFlow",
+	"correlationID": correlationId
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="commonendLogger" doc:id="c8c80bda-9c58-418f-85d5-82033a9b9cdb" message="#[vars.endFlow]"/>
+	</sub-flow>
+</mule>

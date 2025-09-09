@@ -1,0 +1,10 @@
+[
+  {
+    "price__c": "121",
+    "stock__c": "1",
+    "code__c": "WP1",
+    "Id": null,
+    "type": "eproducts_warehouse__c",
+    "Name": "bulbs"
+  }
+]
