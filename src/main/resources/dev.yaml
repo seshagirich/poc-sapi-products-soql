@@ -5,3 +5,23 @@ soql:
   
 api:
   id: "123456"
+  
+  
+# listener configuration details 
+https:
+  listener:
+   host: "0.0.0.0"
+   port: "8081"
+ 
+# TLS key store configuration details     
+key-store:   
+   path: "server-keystore.jks"
+   password: "mule123"
+   keyPassword: "mule123"
+   
+# TLS trusted    
+trust-store:   
+   path: "client-truststore.jks"
+   password: "mule123"      
+   
+ 
